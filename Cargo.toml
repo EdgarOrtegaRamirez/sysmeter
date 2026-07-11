@@ -1,0 +1,15 @@
+[package]
+name = "sysmeter"
+version = "0.1.0"
+description = "Lightweight system resource monitor CLI — CPU, memory, disk, network, and top processes"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/EdgarOrtegaRamirez/sysmeter"
+keywords = ["system", "monitor", "cli", "cpu", "memory", "disk"]
+
+[dependencies]
+clap = { version = "4.6", features = ["derive"] }
+sysinfo = "0.34"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
