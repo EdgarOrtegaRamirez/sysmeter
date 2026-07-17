@@ -95,12 +95,16 @@ pub fn get_top_processes(top: usize, sort_by: &str) -> anyhow::Result<ProcessLis
     let mut sorted = match sort_by {
         "mem" | "memory" => {
             let mut p = processes;
-            p.sort_by(|a, b| b.memory_bytes.cmp(&a.memory_bytes));
+            p.sort_by_key(|b| std::cmp::Reverse(b.memory_bytes));
             p
         }
         _ => {
             let mut p = processes;
-            p.sort_by(|a, b| b.cpu_usage.partial_cmp(&a.cpu_usage).unwrap_or(std::cmp::Ordering::Equal));
+            p.sort_by(|a, b| {
+                b.cpu_usage
+                    .partial_cmp(&a.cpu_usage)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+            });
             p
         }
     };
@@ -149,16 +153,14 @@ mod tests {
     #[test]
     fn test_process_list_render_text() {
         let list = ProcessList {
-            processes: vec![
-                ProcessInfo {
-                    pid: 1234,
-                    name: "test-process".to_string(),
-                    cpu_usage: 5.0,
-                    memory_bytes: 10_000_000,
-                    memory_percent: 1.5,
-                    status: "Running".to_string(),
-                },
-            ],
+            processes: vec![ProcessInfo {
+                pid: 1234,
+                name: "test-process".to_string(),
+                cpu_usage: 5.0,
+                memory_bytes: 10_000_000,
+                memory_percent: 1.5,
+                status: "Running".to_string(),
+            }],
             sort_by: "cpu".to_string(),
             count: 1,
         };
@@ -172,16 +174,14 @@ mod tests {
     #[test]
     fn test_process_list_render_json() {
         let list = ProcessList {
-            processes: vec![
-                ProcessInfo {
-                    pid: 5678,
-                    name: "bash".to_string(),
-                    cpu_usage: 0.1,
-                    memory_bytes: 5_000_000,
-                    memory_percent: 0.5,
-                    status: "Sleep".to_string(),
-                },
-            ],
+            processes: vec![ProcessInfo {
+                pid: 5678,
+                name: "bash".to_string(),
+                cpu_usage: 0.1,
+                memory_bytes: 5_000_000,
+                memory_percent: 0.5,
+                status: "Sleep".to_string(),
+            }],
             sort_by: "cpu".to_string(),
             count: 1,
         };

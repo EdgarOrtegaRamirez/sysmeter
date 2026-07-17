@@ -42,9 +42,18 @@ pub fn get_cpu_info() -> anyhow::Result<CpuInfo> {
     let cpus = system.cpus();
     let global_usage = system.global_cpu_usage();
 
-    let name = cpus.first().map(|c| c.name().to_string()).unwrap_or_default();
-    let brand = cpus.first().map(|c| c.brand().to_string()).unwrap_or_default();
-    let vendor_id = cpus.first().map(|c| c.vendor_id().to_string()).unwrap_or_default();
+    let name = cpus
+        .first()
+        .map(|c| c.name().to_string())
+        .unwrap_or_default();
+    let brand = cpus
+        .first()
+        .map(|c| c.brand().to_string())
+        .unwrap_or_default();
+    let vendor_id = cpus
+        .first()
+        .map(|c| c.vendor_id().to_string())
+        .unwrap_or_default();
 
     Ok(CpuInfo {
         name,

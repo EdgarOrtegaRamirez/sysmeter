@@ -67,7 +67,10 @@ mod tests {
         // May be empty in container environments, but should not error
         if !networks.is_empty() {
             for net in &networks {
-                assert!(!net.interface_name.is_empty(), "Interface name should not be empty");
+                assert!(
+                    !net.interface_name.is_empty(),
+                    "Interface name should not be empty"
+                );
             }
         }
     }

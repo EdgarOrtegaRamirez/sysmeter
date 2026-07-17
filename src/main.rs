@@ -9,7 +9,11 @@ use sysmeter::{
 };
 
 #[derive(Parser)]
-#[command(name = "sysmeter", version, about = "Lightweight system resource monitor CLI")]
+#[command(
+    name = "sysmeter",
+    version,
+    about = "Lightweight system resource monitor CLI"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
@@ -121,7 +125,13 @@ fn collect_all() -> anyhow::Result<SystemReport> {
     let disks = get_disk_info()?;
     let networks = get_network_info()?;
     let processes = get_top_processes(5, "cpu")?;
-    Ok(SystemReport { cpu, memory, disks, networks, processes })
+    Ok(SystemReport {
+        cpu,
+        memory,
+        disks,
+        networks,
+        processes,
+    })
 }
 
 #[derive(serde::Serialize)]
@@ -146,7 +156,10 @@ impl FormatReport for SystemReport {
         for n in &self.networks {
             out.push_str(&format!("  {}\n", n.render_text()));
         }
-        out.push_str(&format!("\n── Top Processes ──\n{}", self.processes.render_text()));
+        out.push_str(&format!(
+            "\n── Top Processes ──\n{}",
+            self.processes.render_text()
+        ));
         out
     }
 }
